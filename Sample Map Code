@@ -1,0 +1,63 @@
+#Cattle Egret Sample Map
+
+#setwd("~/Wisely Lab/Cattle Egrets/CaEg Sample Map")
+
+Cattle_Egret_Data <- read.csv("~/Wisely Lab/Cattle Egrets/CaEg Sample Map/Cattle Egret Data.csv")
+
+Location_GPS <- read.csv("~/Wisely Lab/Cattle Egrets/CaEg Sample Map/Location GPS.csv")
+
+CaEgData <- merge(Cattle_Egret_Data, Location_GPS, by.x="General.Capture.Location")
+
+library(plyr)
+SampleCount <- count(CaEgData, vars = "General.Capture.Location")
+
+Locations <- merge(SampleCount, Location_GPS)
+
+library(raster)
+library(rgdal)
+library(ggplot2)
+library(ggrepel)
+
+
+#Import statemap
+statemap <- readOGR("./State map 2","cb_2015_us_state_20m")
+
+ggplot() +
+  theme_bw() +
+  theme(
+    panel.border = element_blank(),
+    panel.grid.major = element_blank(),
+    panel.grid.minor = element_blank(),
+    axis.line = element_line(colour = "black"),
+    axis.line.x = element_line(color = "black", size = 0.25),
+    axis.line.y = element_line(color = "black", size = 0.25)) +
+  scale_x_continuous(limits = c(-94, -74)) +
+  scale_y_continuous(limits = c(24, 45)) +
+  coord_fixed() +
+  # Draw the state's border
+  geom_polygon(
+    data = statemap,
+    aes(x = long, y = lat, group = group),
+    fill = NA,
+    col = "black") +
+  # Plot the sites
+  geom_point(
+    data = Locations,
+    aes(x = Long, y = Lat, fill = factor(Locations$freq)),
+    size = 3.0, pch = 21) +
+  # Rename the legend
+  scale_fill_discrete(
+    name="Sample Count") +
+  # Plot the count for each site with at least one sample
+  geom_text_repel(
+    data = Locations,
+    aes(x = Long, y = Lat, label = freq),
+    fontface = "bold",
+    col = "black",
+    size = 4,
+    segment.color = "blue",
+    box.padding = unit(0.3, "lines"))
+
+#save plot
+ggsave("samplemap.jpg", plot = last_plot(), dpi = 300, width = 20, height = 20, units = "cm")
+
