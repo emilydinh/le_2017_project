@@ -14,7 +14,11 @@ lineages_data <- rename(x=lineages_data, replace=c("Location"="General.Capture.L
 # Merge lineages_data & gps_loc by General.Capture.Location to get sequence lineages by location
 seq_loc_data <- merge(x=lineages_data, y=gps_loc, by="General.Capture.Location")
 
+# Count the number of each lineage for each location
+lineage_count <- count(seq_loc_data, vars = c("Lineage","General.Capture.Location"))
 
+# Merge the count data frame to gps_loc for number of each lineage/location
+lineage_loc <- merge(lineage_count, gps_loc, by="General.Capture.Location")
 
 
 
