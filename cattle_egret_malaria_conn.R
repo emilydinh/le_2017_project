@@ -6,6 +6,11 @@
 lineages_data <- read.csv("blast_lineages_updated.csv")
 gps_loc <- read.csv("Location GPS.csv")
 
+# Change AY-2014 lineage to Haemosporidia novel
+# First convert Lineage to character from factor
+lineages_data$Lineage <- as.character(lineages_data$Lineage)
+lineages_data$Lineage[lineages_data$Lineage=="AY-2014"] <- "Haemosporidia novel"
+
 # Rename "Location" column in lineages_data to "General.Capture.Location" to match to gps_loc for merging
 library(plyr)
 lineages_data <- rename(x=lineages_data, replace=c("Location"="General.Capture.Location"))
@@ -64,7 +69,7 @@ ggplot() +
 
   # Plot the count of each lineage for each site; doing 1 sample pie chart (Homestead) for now
   bar <- ggplot(data=lineage_loc, aes(x=General.Capture.Location, y=freq, fill=Lineage)) +
-  geom_bar(data=subset(lineage_loc, General.Capture.Location=="Homestead"), width=1, stat="identity")
+  geom_bar(data=subset(lineage_loc, General.Capture.Location=="Homestead"), width=1, stat="identity", color="black")
 
   pie <- bar + coord_polar(theta="y") + theme_minimal() +
     theme(
