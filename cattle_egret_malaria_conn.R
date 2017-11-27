@@ -15,6 +15,9 @@ lineages_data$Lineage[lineages_data$Lineage=="AY-2014"] <- "Haemosporidia novel"
 library(plyr)
 lineages_data <- rename(x=lineages_data, replace=c("Location"="General.Capture.Location"))
 
+# Merge "Species" & "Lineage" columns in lineages_data
+lineages_data$Sp.Lin <- paste(lineages_data$Species, lineages_data$Lineage)
+
 # Merge lineages_data & gps_loc by General.Capture.Location to get sequence lineages by location
 seq_loc_data <- merge(x=lineages_data, y=gps_loc, by="General.Capture.Location")
 
@@ -69,7 +72,7 @@ ggplot() +
 
   # Plot the count of each lineage for each site; doing 1 sample pie chart (Homestead) for now
   bar <- ggplot(data=lineage_loc, aes(x=General.Capture.Location, y=freq, fill=Lineage)) +
-  geom_bar(data=subset(lineage_loc, General.Capture.Location=="Homestead"), width=1, stat="identity", color="black")
+  geom_bar(data=subset(lineage_loc, General.Capture.Location=="Homestead"), width=1, stat="identity")
 
   pie <- bar + coord_polar(theta="y") + theme_minimal() +
     theme(
