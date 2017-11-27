@@ -22,7 +22,7 @@ lineages_data$Sp.Lin <- paste(lineages_data$Species, lineages_data$Lineage)
 seq_loc_data <- merge(x=lineages_data, y=gps_loc, by="General.Capture.Location")
 
 # Count the number of each lineage for each location
-lineage_count <- count(seq_loc_data, vars = c("Lineage","General.Capture.Location"))
+lineage_count <- count(seq_loc_data, vars = c("Sp.Lin","General.Capture.Location"))
 
 # Merge the count data frame to gps_loc for number of each lineage/location
 lineage_loc <- merge(lineage_count, gps_loc, by="General.Capture.Location")
