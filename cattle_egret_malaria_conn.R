@@ -71,8 +71,9 @@ ggplot() +
 
 
   # Plot the count of each lineage for each site; doing 1 sample pie chart (Homestead) for now
-  bar <- ggplot(data=lineage_loc, aes(x=General.Capture.Location, y=freq, fill=Lineage)) +
-  geom_bar(data=subset(lineage_loc, General.Capture.Location=="Homestead"), width=1, stat="identity")
+  bar <- ggplot(data=lineage_loc, aes(x=General.Capture.Location, y=freq, fill=Sp.Lin)) +
+  geom_bar(data=subset(lineage_loc, General.Capture.Location=="Homestead"), width=1, stat="identity") +
+  labs(fill= "Species & Lineage")
 
   pie <- bar + coord_polar(theta="y") + theme_minimal() +
     theme(
