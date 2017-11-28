@@ -78,12 +78,19 @@ ggplot() +
   # Save plot. I can't figure out how to put pie charts + map together, so I'll do them separately for now.
   ggsave("final_map.jpg", plot = last_plot(), dpi = 300, width = 20, height = 20, units = "cm")
 
+  
+# Color values, breaks, and labels for each lineage - colors in legend change with each pie chart using default settings
+col_val <- c("pink","grey", "red","orange", "orange3","khaki", "yellow", "lightgreen",
+             "green4", "lightblue","blue","navy", "mediumorchid", "purple4")
+col_breaks <- unique(lin_loc$Sp.Lin)
+col_labs <- col_breaks
 
 
-  # Plot the count of each lineage for each site; doing 1 sample pie chart (Homestead) for now
+  # Plot the count of each lineage for each site, changing name of General.Capture.Location to match
   bar <- ggplot(data=lin_loc, aes(x=General.Capture.Location, y=freq, fill=Sp.Lin)) +
-  geom_bar(data=subset(lin_loc, General.Capture.Location=="Homestead"), width=1, stat="identity") +
-  labs(fill= "Species & Lineage")
+    geom_bar(data=subset(lin_loc, General.Capture.Location=="Valparaiso"), width=1, stat="identity", color="black") +
+    labs(fill= "Species & Lineage") +
+    scale_fill_manual(values=col_val, breaks=col_breaks, labels=col_labs)
 
   pie <- bar + coord_polar(theta="y") + theme_minimal() +
     theme(
@@ -93,10 +100,10 @@ ggplot() +
       axis.text.y = element_blank(),
       panel.grid=element_blank(),
       plot.title = element_text(hjust=0.5)) +
-    ggtitle("Homestead")
+    ggtitle("Valparaiso")
   pie
   # Save plot.
-  ggsave("prelim_pie_Homestead.jpg", plot=last_plot(), dpi=100, width=20, height=20, units="cm")
+  ggsave("final_pie_Valparaiso.jpg", plot=last_plot(), dpi=100, width=20, height=20, units="cm")
 
 
 
@@ -109,4 +116,4 @@ caeg_avimal <- readFasta("CaEg_AviMal_seq.fasta")
 seqs <- sread(caeg_avimal)
 
 # Possible way of calculating sequence divergence:
-https://www.bioconductor.org/packages/devel/bioc/vignettes/seqcombo/inst/doc/seqcombo.html
+# https://www.bioconductor.org/packages/devel/bioc/vignettes/seqcombo/inst/doc/seqcombo.html
