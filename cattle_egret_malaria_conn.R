@@ -80,17 +80,29 @@ ggplot() +
 
   
 # Color values, breaks, and labels for each lineage - colors in legend change with each pie chart using default settings
-col_val <- c("pink","grey", "red","orange", "orange3","khaki", "yellow", "lightgreen",
-             "green4", "lightblue","blue","navy", "mediumorchid", "purple4")
-col_breaks <- unique(lin_loc$Sp.Lin)
-col_labs <- col_breaks
-
+col_val <- c(" Haemosporidia novel" = "brown", 
+             " Negative" = "grey", 
+             "Leucocytozoon sp. Isolate B30" = "lightpink",
+             "Plasmodium elongatum Clone Sd6022A" = "red",
+             "Plasmodium elongatum Isolate DENVID02" = "orange",
+             "Plasmodium paranucleophilum  Strain CPCT57" = "orangered",
+             "Plasmodium sp. Clone G18" = "yellow",
+             "Plasmodium sp. Cluster D Isolate CRAM 2278" = "palegreen",
+             "Plasmodium sp. Cluster I Isolate IPRAM-ES114 " = "green", # This damn stupid thing won't change color!
+             "Plasmodium sp. G21" = "deepskyblue",
+             "Plasmodium sp. Isolate ERU-375P" = "steelblue4", 
+             "Plasmodium sp. Isolate PIPCHL01" = "navy",
+             "Plasmodium sp. NYCNYC01" = "mediumorchid",
+             "Plasmodium sp. Strain CPCT57" = "purple4")
+# col_breaks <- unique(lin_loc$Sp.Lin)
+# col_labs <- col_breaks
+# "Plasmodium sp. Cluster I Isolate IPRAM-ES114 " = "greenyellow",
 
   # Plot the count of each lineage for each site, changing name of General.Capture.Location to match
   bar <- ggplot(data=lin_loc, aes(x=General.Capture.Location, y=freq, fill=Sp.Lin)) +
     geom_bar(data=subset(lin_loc, General.Capture.Location=="Valparaiso"), width=1, stat="identity", color="black") +
     labs(fill= "Species & Lineage") +
-    scale_fill_manual(values=col_val, breaks=col_breaks, labels=col_labs)
+    scale_fill_manual(values=col_val)
 
   pie <- bar + coord_polar(theta="y") + theme_minimal() +
     theme(
