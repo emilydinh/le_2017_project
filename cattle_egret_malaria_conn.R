@@ -37,9 +37,13 @@ lin_loc <- merge(lin_count, gps_loc, by="General.Capture.Location")
 library(raster)
 library(rgdal)
 library(ggplot2)
+library(ggrepel)
 
-#Import state map of FL
+# Import state map of FL
 FL_map <- readOGR(dsn=".", layer="Florida")
+
+# Remove unneeded locations from gps_loc to make repelled labels on map
+gps_loc <- gps_loc[-c(2,8:17), ]
 
 # Create map
 ggplot() +
@@ -65,9 +69,14 @@ ggplot() +
     data = lin_loc,
     aes(x = Long, y = Lat), 
     size = 3.0, pch = 16, color="blue") +
-  geom_text(data=lin_loc,aes(x=Long, y=Lat, label=General.Capture.Location), color="blue", nudge_x=0.1, nudge_y=-0.15, fontface="bold")
-  # Save plot. I can't fugure out how to put pie charts + map together, so I'll do them separately for now.
-  ggsave("prelim_map.jpg", plot = last_plot(), dpi = 300, width = 20, height = 20, units = "cm")
+  geom_label_repel(
+    data=gps_loc, aes(x=Long, y=Lat, label=General.Capture.Location), fontface="bold",
+    col="blue", size=4, force=15, segment.color = "blue", segment.size = 1,
+    box.padding = unit(0.1, "lines"), point.padding = unit(0.3, "lines")
+    )
+  # geom_text(data=lin_loc,aes(x=Long, y=Lat, label=General.Capture.Location), color="blue", nudge_x=0.1, nudge_y=-0.15, fontface="bold")
+  # Save plot. I can't figure out how to put pie charts + map together, so I'll do them separately for now.
+  ggsave("final_map.jpg", plot = last_plot(), dpi = 300, width = 20, height = 20, units = "cm")
 
 
 
