@@ -2,7 +2,7 @@ ID,Location,Species,Lineage
 0001X,Jacksonville,,Negative
 0002L,Jacksonville,Leucocytozoon sp.,Isolate B30
 0003L,Jacksonville,Leucocytozoon sp.,Isolate B30
-0004F,Valparaiso,Plasmodium paranucleophilum ,Strain CPCT57
+0004F,Valparaiso,Plasmodium paranucleophilum,Strain CPCT57
 0004L,Valparaiso,Leucocytozoon sp.,Isolate B30
 0006F,Jacksonville,Plasmodium sp.,Cluster D Isolate CRAM 2278
 0007F,Milton,Plasmodium sp.,NYCNYC01
@@ -29,7 +29,7 @@ ID,Location,Species,Lineage
 0028X,Valparaiso,,Negative
 0029L,Milton,Leucocytozoon sp.,AY-2014
 0030X,Milton,,Negative
-0031F,Milton,Plasmodium paranucleophilum ,Strain CPCT57
+0031F,Milton,Plasmodium paranucleophilum,Strain CPCT57
 0032F,Milton,Plasmodium sp.,Clone G18
 0033X,Milton,,Negative
 0034L,Milton,Leucocytozoon sp.,Isolate B30
@@ -60,7 +60,7 @@ ID,Location,Species,Lineage
 0072X,Milton,,Negative
 0073X,Milton,,Negative
 0074F,Milton,Plasmodium elongatum,Isolate DENVID02
-0075F,Milton,Plasmodium sp.,Strain CPCT57
+0075F,Milton,Plasmodium paranucleophilum,Strain CPCT57
 0076X,Tampa,,Negative
 0077X,Tampa,,Negative
 0078X,Tampa,,Negative
