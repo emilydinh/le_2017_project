@@ -74,37 +74,166 @@ ggplot() +
     col="blue", size=4, force=15, segment.color = "blue", segment.size = 1,
     box.padding = unit(0.1, "lines"), point.padding = unit(0.3, "lines")
     )
-  # geom_text(data=lin_loc,aes(x=Long, y=Lat, label=General.Capture.Location), color="blue", nudge_x=0.1, nudge_y=-0.15, fontface="bold")
   # Save plot. I can't figure out how to put pie charts + map together, so I'll do them separately for now.
   ggsave("final_map.jpg", plot = last_plot(), dpi = 300, width = 20, height = 20, units = "cm")
 
-  
-# Color values, breaks, and labels for each lineage - colors in legend change with each pie chart using default settings
-col_val <- c(" Haemosporidia novel" = "brown", 
-             " Negative" = "grey", 
+# List of lineages to refer to in specifying color values & limits below. Strings
+# must match for things to work
+lin_list <- unique(lin_data$Sp.Lin)
+
+# Specify color values and limits for each lineage - colors in legend
+# change with each pie chart using default settings
+col_val <- c(" Haemosporidia novel" = "white", 
+             " Negative" = "grey50", 
              "Leucocytozoon sp. Isolate B30" = "lightpink",
              "Plasmodium elongatum Clone Sd6022A" = "red",
              "Plasmodium elongatum Isolate DENVID02" = "orange",
-             "Plasmodium paranucleophilum  Strain CPCT57" = "orangered",
+             "Plasmodium paranucleophilum Strain CPCT57" = "darkorange3",
              "Plasmodium sp. Clone G18" = "yellow",
-             "Plasmodium sp. Cluster D Isolate CRAM 2278" = "palegreen",
-             "Plasmodium sp. Cluster I Isolate IPRAM-ES114 " = "green", # This damn stupid thing won't change color!
-             "Plasmodium sp. G21" = "deepskyblue",
-             "Plasmodium sp. Isolate ERU-375P" = "steelblue4", 
+             "Plasmodium sp. Cluster D Isolate CRAM 2278" = "green",
+             "Plasmodium sp. Cluster I Isolate IPRAM-ES114" = "forestgreen",
+             "Plasmodium sp. G21" = "lightblue",
+             "Plasmodium sp. Isolate ERU-375P" = "royalblue", 
              "Plasmodium sp. Isolate PIPCHL01" = "navy",
-             "Plasmodium sp. NYCNYC01" = "mediumorchid",
-             "Plasmodium sp. Strain CPCT57" = "purple4")
-# col_breaks <- unique(lin_loc$Sp.Lin)
-# col_labs <- col_breaks
-# "Plasmodium sp. Cluster I Isolate IPRAM-ES114 " = "greenyellow",
+             "Plasmodium sp. NYCNYC01" = "purple4")
+
+Homestead_lim <- c(" Haemosporidia novel", " Negative", "Leucocytozoon sp. Isolate B30",
+                   "Plasmodium elongatum Clone Sd6022A", "Plasmodium elongatum Isolate DENVID02",
+                   "Plasmodium sp. Cluster I Isolate IPRAM-ES114", "Plasmodium sp. G21")
+
+Milton_lim <- c(" Haemosporidia novel", " Negative", "Leucocytozoon sp. Isolate B30",
+                "Plasmodium elongatum Isolate DENVID02", "Plasmodium paranucleophilum Strain CPCT57",
+                "Plasmodium sp. Clone G18", "Plasmodium sp. Cluster D Isolate CRAM 2278",
+                "Plasmodium sp. G21", "Plasmodium sp. NYCNYC01")
+
+Jax_lim <- c(" Negative", "Leucocytozoon sp. Isolate B30",
+             "Plasmodium elongatum Isolate DENVID02", "Plasmodium sp. Clone G18",
+             "Plasmodium sp. Cluster D Isolate CRAM 2278", "Plasmodium sp. G21",
+             "Plasmodium sp. Isolate ERU-375P")
+  
+
+Tampa_lim <- c(" Negative", "Leucocytozoon sp. Isolate B30",
+               "Plasmodium elongatum Isolate DENVID02", "Plasmodium sp. Isolate PIPCHL01")
+
+KW_lim <- c(" Negative", "Leucocytozoon sp. Isolate B30", "Plasmodium sp. G21",
+            "Plasmodium sp. Isolate ERU-375P")
+
+V_lim <- c(" Negative", "Leucocytozoon sp. Isolate B30",
+           "Plasmodium paranucleophilum Strain CPCT57",
+           "Plasmodium sp. Clone G18",
+           "Plasmodium sp. Cluster D Isolate CRAM 2278",
+           "Plasmodium sp. Isolate PIPCHL01")
 
   # Plot the count of each lineage for each site, changing name of General.Capture.Location to match
-  bar <- ggplot(data=lin_loc, aes(x=General.Capture.Location, y=freq, fill=Sp.Lin)) +
+  # Homestead
+  Homestead_bar <- ggplot(data=lin_loc, aes(x=General.Capture.Location, y=freq, fill=Sp.Lin)) +
+    geom_bar(data=subset(lin_loc, General.Capture.Location=="Homestead"), width=1, stat="identity", color="black") +
+    labs(fill= "Species & Lineage") +
+    scale_fill_manual(values=col_val, limits=Homestead_lim)
+  
+  Homestead_pie <- Homestead_bar + coord_polar(theta="y") + theme_minimal() +
+    theme(
+      axis.title.x = element_blank(),
+      axis.title.y = element_blank(),
+      axis.text.x = element_blank(),
+      axis.text.y = element_blank(),
+      panel.grid=element_blank(),
+      plot.title = element_text(hjust=0.5)) +
+    ggtitle("Homestead")
+  Homestead_pie
+  # Save plot.
+  ggsave("final_pie_Homestead.jpg", plot=last_plot(), dpi=100, width=20, height=20, units="cm")
+
+  
+  
+  # Milton
+  Milton_bar <- ggplot(data=lin_loc, aes(x=General.Capture.Location, y=freq, fill=Sp.Lin)) +
+    geom_bar(data=subset(lin_loc, General.Capture.Location=="Milton"), width=1, stat="identity", color="black") +
+    labs(fill= "Species & Lineage") +
+    scale_fill_manual(values=col_val, limits=Milton_lim)
+  
+  Milton_pie <- Milton_bar + coord_polar(theta="y") + theme_minimal() +
+    theme(
+      axis.title.x = element_blank(),
+      axis.title.y = element_blank(),
+      axis.text.x = element_blank(),
+      axis.text.y = element_blank(),
+      panel.grid=element_blank(),
+      plot.title = element_text(hjust=0.5)) +
+    ggtitle("Milton")
+  Milton_pie
+  # Save plot.
+  ggsave("final_pie_Milton.jpg", plot=last_plot(), dpi=100, width=20, height=20, units="cm")
+  
+  
+  
+  # Jacksonville
+  Jax_bar <- ggplot(data=lin_loc, aes(x=General.Capture.Location, y=freq, fill=Sp.Lin)) +
+    geom_bar(data=subset(lin_loc, General.Capture.Location=="Jacksonville"), width=1, stat="identity", color="black") +
+    labs(fill= "Species & Lineage") +
+    scale_fill_manual(values=col_val, limits=Jax_lim)
+
+  Jax_pie <- Jax_bar + coord_polar(theta="y") + theme_minimal() +
+    theme(
+      axis.title.x = element_blank(),
+      axis.title.y = element_blank(),
+      axis.text.x = element_blank(),
+      axis.text.y = element_blank(),
+      panel.grid=element_blank(),
+      plot.title = element_text(hjust=0.5)) +
+    ggtitle("Jacksonville")
+  Jax_pie
+  # Save plot.
+  ggsave("final_pie_Jacksonville.jpg", plot=last_plot(), dpi=100, width=20, height=20, units="cm")
+  
+  
+  # Tampa
+  Tampa_bar <- ggplot(data=lin_loc, aes(x=General.Capture.Location, y=freq, fill=Sp.Lin)) +
+    geom_bar(data=subset(lin_loc, General.Capture.Location=="Tampa"), width=1, stat="identity", color="black") +
+    labs(fill= "Species & Lineage") +
+    scale_fill_manual(values=col_val, limits=Tampa_lim)
+  
+  Tampa_pie <- Tampa_bar + coord_polar(theta="y") + theme_minimal() +
+    theme(
+      axis.title.x = element_blank(),
+      axis.title.y = element_blank(),
+      axis.text.x = element_blank(),
+      axis.text.y = element_blank(),
+      panel.grid=element_blank(),
+      plot.title = element_text(hjust=0.5)) +
+    ggtitle("Tampa")
+  Tampa_pie
+  # Save plot.
+  ggsave("final_pie_Tampa.jpg", plot=last_plot(), dpi=100, width=20, height=20, units="cm")
+  
+  
+  # Key West
+  KW_bar <- ggplot(data=lin_loc, aes(x=General.Capture.Location, y=freq, fill=Sp.Lin)) +
+    geom_bar(data=subset(lin_loc, General.Capture.Location=="Key West"), width=1, stat="identity", color="black") +
+    labs(fill= "Species & Lineage") +
+    scale_fill_manual(values=col_val, limits=KW_lim)
+  
+  KW_pie <- KW_bar + coord_polar(theta="y") + theme_minimal() +
+    theme(
+      axis.title.x = element_blank(),
+      axis.title.y = element_blank(),
+      axis.text.x = element_blank(),
+      axis.text.y = element_blank(),
+      panel.grid=element_blank(),
+      plot.title = element_text(hjust=0.5)) +
+    ggtitle("Key West")
+  KW_pie
+  # Save plot.
+  ggsave("final_pie_Key_West.jpg", plot=last_plot(), dpi=100, width=20, height=20, units="cm")
+  
+  
+  # Valparaiso
+  V_bar <- ggplot(data=lin_loc, aes(x=General.Capture.Location, y=freq, fill=Sp.Lin)) +
     geom_bar(data=subset(lin_loc, General.Capture.Location=="Valparaiso"), width=1, stat="identity", color="black") +
     labs(fill= "Species & Lineage") +
-    scale_fill_manual(values=col_val)
-
-  pie <- bar + coord_polar(theta="y") + theme_minimal() +
+    scale_fill_manual(values=col_val, limits=V_lim)
+  
+  V_pie <- V_bar + coord_polar(theta="y") + theme_minimal() +
     theme(
       axis.title.x = element_blank(),
       axis.title.y = element_blank(),
@@ -113,19 +242,7 @@ col_val <- c(" Haemosporidia novel" = "brown",
       panel.grid=element_blank(),
       plot.title = element_text(hjust=0.5)) +
     ggtitle("Valparaiso")
-  pie
+  V_pie 
   # Save plot.
   ggsave("final_pie_Valparaiso.jpg", plot=last_plot(), dpi=100, width=20, height=20, units="cm")
-
-
-
-###########################################################################################################################
-
-# read in cattle egret avian malaria sequences FASTA file
-library("ShortRead")
-caeg_avimal <- readFasta("CaEg_AviMal_seq.fasta")
-# read sequences from FASTA file
-seqs <- sread(caeg_avimal)
-
-# Possible way of calculating sequence divergence:
-# https://www.bioconductor.org/packages/devel/bioc/vignettes/seqcombo/inst/doc/seqcombo.html
+  
